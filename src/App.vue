@@ -1,7 +1,7 @@
 <template>
   <div class="app">
     <h2>Create post</h2>
-    <input type="text" v-model.trim="modificatorValue">
+    <!-- <input type="text" v-model.trim="modificatorValue"> -->
     <my-button
     style="margin: 15px 0;"
       @click="showDialog"
@@ -19,7 +19,9 @@
     <post-list 
       :posts="posts"
       @remove="removePost"
+      v-if="!isPostsLoading"
     />
+    <div v-else>Loading...</div>
   </div>
 </template>
 
@@ -27,6 +29,7 @@
 <script>
 import PostForm from './components/PostForm.vue';
 import PostList from './components/PostList.vue';
+import axios from 'axios';
 
 export default {
   components: {
@@ -35,14 +38,9 @@ export default {
   },
   data() {
     return {
-      posts: [
-        {id: 1, title: 'JavaScript', body: 'Desc post'},
-        {id: 2, title: 'JavaScript 2', body: 'Desc post 2'},
-        {id: 3, title: 'JavaScript 3', body: 'Desc post 3'},
-        {id: 4, title: 'JavaScript 4', body: 'Desc post 4'},
-      ],
+      posts: [],
       dialogVisiable: false,
-      modificatorValue: '',
+      isPostsLoading: false,
     }
   },
   methods: {
@@ -56,7 +54,24 @@ export default {
     showDialog() {
       this.dialogVisiable = true;
     },
+    async fetchPosts() {
+      try {
+        this.isPostsLoading = true;
+        setTimeout(async () => {
+          const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=10`);
+          this.posts = response.data;
+          this.isPostsLoading = false;
+        }, 1000);
+      } catch (e) {
+        alert('Error')
+      } finally {
+        // this.isPostsLoading = false;
+      }
+    },
   },
+  mounted() {
+    this.fetchPosts();
+  }
 }
 </script>
 
