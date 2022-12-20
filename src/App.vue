@@ -1,30 +1,75 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div class="app">
+    <h2>Create post</h2>
+    <input type="text" v-model.trim="modificatorValue">
+    <my-button
+    style="margin: 15px 0;"
+      @click="showDialog"
+    >
+      Create post
+    </my-button>
+    <my-dialog 
+      v-model:show="dialogVisiable"
+    >
+      <post-form
+        @create="createPost"  
+      />
+    </my-dialog>
+  
+    <post-list 
+      :posts="posts"
+      @remove="removePost"
+    />
+  </div>
 </template>
 
+
+<script>
+import PostForm from './components/PostForm.vue';
+import PostList from './components/PostList.vue';
+
+export default {
+  components: {
+    PostForm,
+    PostList
+  },
+  data() {
+    return {
+      posts: [
+        {id: 1, title: 'JavaScript', body: 'Desc post'},
+        {id: 2, title: 'JavaScript 2', body: 'Desc post 2'},
+        {id: 3, title: 'JavaScript 3', body: 'Desc post 3'},
+        {id: 4, title: 'JavaScript 4', body: 'Desc post 4'},
+      ],
+      dialogVisiable: false,
+      modificatorValue: '',
+    }
+  },
+  methods: {
+    createPost(post) { 
+      this.posts.push(post);
+      this.dialogVisiable = false;
+    },
+    removePost(post) {
+      this.posts = this.posts.filter(p => p.id !== post.id)
+    },
+    showDialog() {
+      this.dialogVisiable = true;
+    },
+  },
+}
+</script>
+
+
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
+.app {
+  padding: 20px;
 }
 </style>
+
+// single file component
