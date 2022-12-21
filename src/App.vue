@@ -1,13 +1,17 @@
 <template>
   <div class="app">
     <h2>Create post</h2>
-    <!-- <input type="text" v-model.trim="modificatorValue"> -->
-    <my-button
-    style="margin: 15px 0;"
-      @click="showDialog"
-    >
-      Create post
-    </my-button>
+    <div class="app__btns">
+      <my-button
+        @click="showDialog"
+      >
+        Create post
+      </my-button>
+      <my-select 
+        v-model="selectedSort"
+        :options="sortOptions"
+      />
+    </div>
     <my-dialog 
       v-model:show="dialogVisiable"
     >
@@ -41,6 +45,11 @@ export default {
       posts: [],
       dialogVisiable: false,
       isPostsLoading: false,
+      selectedSort: '',
+      sortOptions: [
+        {value: 'title', name: 'kn'},
+        {value: 'body', name: 'js '},
+      ]
     }
   },
   methods: {
@@ -57,20 +66,25 @@ export default {
     async fetchPosts() {
       try {
         this.isPostsLoading = true;
-        setTimeout(async () => {
-          const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=10`);
-          this.posts = response.data;
-          this.isPostsLoading = false;
-        }, 1000);
+        const response = await axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=10`);
+        this.posts = response.data;
       } catch (e) {
         alert('Error')
       } finally {
-        // this.isPostsLoading = false;
+        this.isPostsLoading = false;
       }
     },
   },
   mounted() {
     this.fetchPosts();
+  },
+  watch: {
+    selectedSort(newValue) {
+      console.log(newValue);
+    },
+    dialogVisiable(newValue) {
+      console.log(newValue);
+    }
   }
 }
 </script>
@@ -84,6 +98,11 @@ export default {
 }
 .app {
   padding: 20px;
+}
+.app__btns {
+  margin: 15px 0;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
 
