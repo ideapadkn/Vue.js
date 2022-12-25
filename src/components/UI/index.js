@@ -1,7 +1,8 @@
 import MyButton from '@/components/UI/MyButton';
 import MyInput from '@/components/UI/MyInput';
 import MyDiaglog from '@/components/UI/MyDialog';
-import MySelect from '@/components/UI/MySelect'
+import MySelect from '@/components/UI/MySelect';
+import Navbar from '@/components/UI/Navbar';
 
 
 export default [
@@ -9,5 +10,6 @@ export default [
   MyInput,
   MyDiaglog,
   MySelect,
+  Navbar,
   
 ]
