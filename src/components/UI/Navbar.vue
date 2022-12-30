@@ -8,9 +8,9 @@
     </div>
     <div class="navbar__btns">
       <my-button
-        @click="$router.push('/users')"
+        @click="$router.push('/posts')"
       >
-        Users
+        Posts
       </my-button>
       <my-button
         style="margin-left: 15px;"
